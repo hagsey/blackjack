@@ -18,9 +18,6 @@ def calculate_total(cards)
 total
 end
 
-def winning_message(message)
-end
-
 def compare_total(dealer_total, player_total)
   if dealer_total >= player_total
     puts "Dealer won with a total of #{dealer_total} over your #{player_total}."
@@ -62,20 +59,27 @@ player_total = calculate_total(player_cards)
 dealer_total = calculate_total(dealer_cards)
 
 loop do
-  if blackjack_check(dealer_total, player_total) == nil
+  puts "Welcome to Blackjack. Let's deal."
+  sleep 1
 
+  if blackjack_check(dealer_total, player_total) == nil
   puts "You have a #{player_cards[0]} and a #{player_cards[1]} for a total of #{calculate_total(player_cards)}."
   puts "Dealer has a #{dealer_cards[0]}."
 
     while player_total < 21
       puts "Press (1) to hit or (2) to stay."
       hit_or_stay = gets.chomp.to_i
+      sleep 1
       if hit_or_stay == 1
         player_cards << deck.shift
+        player_total = calculate_total(player_cards) 
         puts "You were dealt a #{player_cards.last}."
         puts "Your total is now #{calculate_total(player_cards)}."
         if player_total == 21
           puts "You got 21!"
+          break
+        elsif player_total > 21
+          puts "Bust! Dealer wins."
           break
         end
       elsif hit_or_stay == 2
@@ -83,17 +87,14 @@ loop do
         break
       else
         puts "Sorry I didn't get that."
-      end
-      player_total = calculate_total(player_cards)
-      if player_total > 21
-        puts "Bust! Dealer wins."
-        break
-      end
+      end     
     end
 
-    if player_total <= 21 
+    if player_total <= 21
+      sleep 1 
       puts "Dealer's second card is #{dealer_cards[1]} for a total of #{calculate_total(dealer_cards)}."
       while dealer_total < 17
+        sleep 1
         dealer_cards << deck.shift
         puts "Dealer was dealt a #{dealer_cards.last}."
         dealer_total = calculate_total(dealer_cards)
@@ -105,13 +106,15 @@ loop do
         end
       end
       if calculate_total(dealer_cards.take(2)) < 21
+        sleep 1
         puts "Dealer must stay with #{dealer_total}."
         compare_total(dealer_total, player_total)
       end
     end
   end
+  sleep 1
   puts "Play again? (Y/N)"
-  play_again = gets.chomp.downcase
+  play_again = gets.chomp.upcase
   break unless play_again == 'Y'
 end
 
