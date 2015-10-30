@@ -18,11 +18,11 @@ def calculate_total(cards)
 total
 end
 
-def compare_total(dealer_total, player_total, player_name, dealer_name)
+def compare_total(dealer_total, player_total, player_name)
   if dealer_total >= player_total
-    puts "#{dealer_name} won with a total of #{dealer_total} compared to #{player_name}'s #{player_total}."
+    puts "Dealer won with a total of #{dealer_total} compared to #{player_name}'s #{player_total}."
   else
-    puts "#{player_name} won with a total of #{player_total} over #{dealer_name}'s' #{dealer_total}."
+    puts "#{player_name} won with a total of #{player_total} over Dealer's #{dealer_total}."
   end
 end
 
@@ -38,7 +38,7 @@ def blackjack_check(dealer_total, player_total, dealer_cards, player_cards, play
     return "blackjack"
   elsif player_total == 21
     opening_hand_message(player_name, player_cards)
-    puts "Blackjack! You win!"
+    puts "Blackjack! #{player_name} wins!"
     return "blackjack"
   elsif dealer_total == 21
     opening_hand_message(player_name, player_cards)
@@ -76,10 +76,10 @@ loop do
 
   sleep 1
 
-  if blackjack_check(dealer_total, player_total, dealer_cards, player_cards, player_name, dealer_name) == nil
+  unless blackjack_check(dealer_total, player_total, dealer_cards, player_cards, player_name, dealer_name) == "blackjack"
   puts opening_hand_message(player_name, player_cards)
   puts "#{player_name}'s total is #{calculate_total(player_cards)}."
-  puts "#{dealer_name} has a #{dealer_cards[0]}."
+  puts "Dealer has a #{dealer_cards[0]}."
 
     while player_total < 21
       puts "Press (1) to hit or (2) to stay."
@@ -92,10 +92,8 @@ loop do
         puts "Total is now #{calculate_total(player_cards)}."
         if player_total == 21
           puts "#{player_name} got 21!"
-          break
         elsif player_total > 21
-          puts "Bust! #{dealer_name} wins."
-          break
+          puts "Bust! Dealer wins."
         end
       elsif hit_or_stay == 2
         puts "#{player_name} is staying with #{calculate_total(player_cards)}."
@@ -107,25 +105,25 @@ loop do
 
     if player_total <= 21
       sleep 1 
-      puts "#{dealer_name}'s second card is #{dealer_cards[1]} for a total of #{calculate_total(dealer_cards)}."
+      puts "Dealer's second card is #{dealer_cards[1]} for a total of #{calculate_total(dealer_cards)}."
       
       if (17..21).include?(dealer_total)
-        puts "#{dealer_name} must stay with #{dealer_total}."
-        compare_total(dealer_total, player_total, player_name, dealer_name)
+        puts "Dealer must stay with #{dealer_total}."
+        compare_total(dealer_total, player_total, player_name)
       end
       
       while dealer_total < 17
         sleep 1
         dealer_cards << deck.shift
-        puts "#{dealer_name} was dealt a #{dealer_cards.last}."
+        puts "Dealer was dealt a #{dealer_cards.last}."
         dealer_total = calculate_total(dealer_cards)
         puts "Total is now #{dealer_total}."
         if dealer_total < 17
         elsif (17..21).include?(dealer_total)
-          puts "#{dealer_name} must stay with a total of #{dealer_total}"
-          compare_total(dealer_total, player_total, player_name, dealer_name)
+          puts "Dealer must stay with a total of #{dealer_total}"
+          compare_total(dealer_total, player_total, player_name)
         else
-          puts "#{dealer_name} busts! #{player_name} wins!"
+          puts "Dealer busts! #{player_name} wins!"
         end
       end
     end
