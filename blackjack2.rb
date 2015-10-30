@@ -77,7 +77,7 @@ loop do
   sleep 1
 
   unless blackjack_check(dealer_total, player_total, dealer_cards, player_cards, player_name, dealer_name) == "blackjack"
-  puts opening_hand_message(player_name, player_cards)
+  opening_hand_message(player_name, player_cards)
   puts "#{player_name}'s total is #{calculate_total(player_cards)}."
   puts "Dealer has a #{dealer_cards[0]}."
 
